@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import todoRoutes from "./todoRoutes/routes.js";
+import todoRoutes from "./routes/todoRoutes.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -11,17 +12,16 @@ const PORT = process.env.PORT;
 
 //middelwear
 app.use(express.json());
+app.use(cors());
 
-//Route
+//Routes
 app.use("/todos", todoRoutes);
 
-//MongoDB verbinden
+//MongoDB verbindung
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB verbinden"))
-  .catch((err) => console.error("Fhler beim verbindung zu MongoDB"));
+  .catch((err) => console.log("Fehler beim verbindung auf MongoDB", err));
 
-// Server start
-app.listen(PORT, () => {
-  console.log(`Server läuft auf port ${PORT}`);
-});
+// Start server
+app.listen(PORT, () => console.error(`Server lauft auf port ${PORT}`));
